@@ -1,0 +1,9 @@
+<div class="container mt-5">
+    <h2>Dummy Payment Page</h2>
+    <p>Total Payable: <strong>${{ total }}</strong></p>
+    <form method="post" action="{% url 'payment_success' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-success">Pay Now</button>
+    </form>
+  </div>
+  

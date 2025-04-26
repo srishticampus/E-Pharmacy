@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Payment Success - Pharma</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Rubik:400,700|Crimson+Text:400,400i" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+  <div class="site-wrap">
+
+    {% comment %} {% include 'partials/navbar.html' %} {% endcomment %}
+
+    <div class="bg-light py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-0">
+            <a href="{% url 'home' %}">Home</a>
+            <span class="mx-2">/</span>
+            <strong class="text-black">Payment Success</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section text-center">
+      <div class="container">
+        <span class="icon-check_circle display-3 text-success"></span>
+        <h2 class="display-4 text-black">Payment Successful!</h2>
+        <p class="lead mb-4">Thank you for your purchase. Your order has been confirmed and is being processed.</p>
+        <p><a href="{% url 'product_list' %}" class="btn btn-primary px-4 py-2">Continue Shopping</a></p>
+      </div>
+    </div>
+
+    {% comment %} {% include 'partials/footer.html' %} {% endcomment %}
+
+  </div>
+
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

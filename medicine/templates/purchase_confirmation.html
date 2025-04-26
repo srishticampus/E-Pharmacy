@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Pharma — Payment Confirmation</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Rubik:400,700|Crimson+Text:400,400i" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+<div class="site-wrap">
+
+  {% comment %} {% include 'partials/navbar.html' %} {% endcomment %}
+
+  <div class="bg-light py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 mb-0"><a href="{% url 'home' %}">Home</a> <span class="mx-2">/</span>
+          <strong class="text-black">Checkout</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="site-section">
+    <div class="container">
+
+      <div class="row mb-5">
+        <div class="col-md-12 text-center">
+          <span class="icon-check_circle display-3 text-success"></span>
+          <h2 class="display-4 text-black">Order Summary</h2>
+          <p class="lead">Your order for <strong>{{ product.name }}</strong> has been placed.</p>
+          <img src="{{ product.image.url }}" width="200" class="mb-3" alt="{{ product.name }}">
+          <p><strong>Total Payable:</strong> ₹{{ product.price }}</p>
+        </div>
+      </div>
+
+      <!-- Dummy Payment Section -->
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <h4 class="mb-4 text-center">Select Payment Method</h4>
+          <form method="POST" action="{% url 'payment_success' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label><input type="radio" name="payment_method" value="card" checked> Credit/Debit Card</label>
+              <input type="text" class="form-control mt-2" placeholder="Card Number" required>
+              <input type="text" class="form-control mt-2" placeholder="Expiry (MM/YY)" required>
+              <input type="text" class="form-control mt-2 mb-2" placeholder="CVV" required>
+            </div>
+            <div class="form-group">
+              <label><input type="radio" name="payment_method" value="upi"> UPI</label>
+              <input type="text" class="form-control mt-2 mb-2" placeholder="UPI ID (e.g., you@bank)">
+            </div>
+            <div class="form-group">
+              <label><input type="radio" name="payment_method" value="cod"> Pay on Delivery</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block mt-4">Pay ₹{{ product.price }}</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {% comment %} {% include 'partials/footer.html' %} {% endcomment %}
+
+</div>
+
+<!-- JS Scripts -->
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
