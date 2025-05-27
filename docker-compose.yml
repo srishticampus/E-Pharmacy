@@ -1,7 +1,7 @@
 services:
   django_backend:
     build: ./
-    container_name: inventory_management_django
+    container_name: e_pharmacy_django
     volumes:
       - ./:/app  # Maps the host's directory to /app in the container
       - ./media:/app/media

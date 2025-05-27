@@ -1,4 +1,4 @@
-name: Deploy Inventory Management Project
+name: Deploy E-Pharmacy Project
 
 on:
   push:
@@ -23,12 +23,12 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             # Create target directory with proper permissions
-            sudo mkdir -p /var/www/python.sicsglobal.com/inventory_management
-            sudo chown -R ${{ secrets.SERVER_USERNAME }}:www-data /var/www/python.sicsglobal.com/inventory_management
-            sudo chmod -R 775 /var/www/python.sicsglobal.com/inventory_management
+            sudo mkdir -p /var/www/python.sicsglobal.com/e_pharmacy
+            sudo chown -R ${{ secrets.SERVER_USERNAME }}:www-data /var/www/python.sicsglobal.com/e_pharmacy
+            sudo chmod -R 775 /var/www/python.sicsglobal.com/e_pharmacy
 
             # Create required subdirectories
-            cd /var/www/python.sicsglobal.com/inventory_management/
+            cd /var/www/python.sicsglobal.com/e_pharmacy/
             mkdir -p media staticfiles db
             sudo chown -R ${{ secrets.SERVER_USERNAME }}:www-data media staticfiles db
             sudo chmod -R 775 media staticfiles db
@@ -52,7 +52,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           source: "./"
-          target: "/var/www/python.sicsglobal.com/inventory_management/"
+          target: "/var/www/python.sicsglobal.com/e_pharmacy/"
           strip_components: 1
           overwrite: true
           tar_tmp_path: /tmp
@@ -67,7 +67,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd /var/www/python.sicsglobal.com/inventory_management/
+            cd /var/www/python.sicsglobal.com/e_pharmacy/
 
             # Restore preserved files
             [ -f .temp/db.sqlite3 ] && mv .temp/db.sqlite3 .
@@ -88,9 +88,9 @@ jobs:
 
             # Verify container is running
             sleep 20
-            if ! docker ps --filter "name=inventory_management_django" --format "{{.Status}}" | grep -q "Up"; then
+            if ! docker ps --filter "name=e_pharmacy_django" --format "{{.Status}}" | grep -q "Up"; then
               echo "Web container failed to start"
-              docker logs inventory_management_django || true
+              docker logs e_pharmacy_django || true
               exit 1
             fi
 
@@ -110,11 +110,11 @@ jobs:
                 exit 0
               fi
               echo "Attempt $i: Application not ready yet..."
-              docker logs inventory_management_django --tail 20 || true
+              docker logs e_pharmacy_django --tail 20 || true
             done
 
             echo "Health check failed after 30 seconds"
-            docker logs inventory_management_django || true
+            docker logs e_pharmacy_django || true
             exit 1
 
       # Step 6: Enhanced Rollback
@@ -128,7 +128,7 @@ jobs:
           script: |
             echo "Starting rollback procedure..."
 
-            cd /var/www/python.sicsglobal.com/inventory_management/ || {
+            cd /var/www/python.sicsglobal.com/e_pharmacy/ || {
               echo "Failed to enter deployment directory"
               exit 1
             }
@@ -150,7 +150,7 @@ jobs:
                 exit 0
               else
                 echo "Failed to start containers after rollback"
-                docker logs inventory_management_django || true
+                docker logs e_pharmacy_django || true
                 exit 1
               fi
             elif [ -d ".temp" ]; then
@@ -168,7 +168,7 @@ jobs:
                 exit 0
               else
                 echo "Failed to start containers after rollback"
-                docker logs inventory_management_django || true
+                docker logs e_pharmacy_django || true
                 exit 1
               fi
             else
@@ -181,7 +181,7 @@ jobs:
                 exit 1  # Still mark as failed but with restarted container
               else
                 echo "Failed to restart containers"
-                docker logs inventory_management_django || true
+                docker logs e_pharmacy_django || true
                 exit 1
               fi
             fi
