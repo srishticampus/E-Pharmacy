@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Details</title>
+</head>
+<body>
+    <h2>Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h2>
+
+    <p><strong>Username:</strong> {{ doctor.user.username }}</p>
+    <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+    <p><strong>Phone Number:</strong> {{ doctor.phone_number }}</p>
+    <p><strong>Email:</strong> {{ doctor.user.email }}</p>
+
+    <a href="{% url 'doctor_dashboard' %}">Back to Dashboard</a>
+</body>
+</html>

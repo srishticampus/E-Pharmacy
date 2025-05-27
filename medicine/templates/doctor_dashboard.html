@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Dashboard</title>
+</head>
+<body>
+    <h2>Welcome, Dr. {{ doctor.user.first_name }}</h2>
+      <a href="{% url 'doctor_detail' doctor.id %}">Dr. {{ doctor.user.first_name }} ({{ doctor.specialization }})</a>
+
+    <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+    <p><strong>Phone:</strong> {{ doctor.phone_number }}</p>
+    <p><strong>Email:</strong> {{ doctor.user.email }}</p>
+
+    <hr>
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>
