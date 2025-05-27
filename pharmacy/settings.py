@@ -30,7 +30,13 @@ SECRET_KEY = 'django-insecure-&p-2%^z*fwztq2tca618o5=o58j=8z(^dwcg0purr5m94m5z!1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','0.0.0.0','python.sicsglobal.com']
+FORCE_SCRIPT_NAME = '/e_pharmacy'
+# Add CSRF trusted origins
+CSRF_TRUSTED_ORIGINS = [
+    'https://python.sicsglobal.com',
+    'http://python.sicsglobal.com',
+]
 
 
 # Application definition
@@ -132,6 +138,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = 'static/'
 STATICFILES_DIRS =[os.path.join(BASE_DIR,'static')]
-STATIC_ROOT =os.path.join(BASE_DIR,'assets')
+STATIC_ROOT =os.path.join(BASE_DIR,'staticfiles')
 MEDIA_URL= '/media/'
 MEDIA_ROOT= os.path.join(BASE_DIR,'media')
