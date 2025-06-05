@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Approved Prescriptions</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for prescription in prescriptions %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Patient: {{ prescription.patient.username }}</h5>
+                    <p class="card-text"><strong>Description:</strong> {{ prescription.description }}</p>
+                    <p class="card-text text-muted"><strong>Uploaded At:</strong> {{ prescription.uploaded_at }}</p>
+                    <a href="{{ prescription.file.url }}" class="btn btn-outline-primary w-100 mb-2">Download File</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col">
+            <div class="alert alert-info text-center">No approved prescriptions available.</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

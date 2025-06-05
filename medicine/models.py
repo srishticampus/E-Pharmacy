@@ -41,13 +41,19 @@ class Purchase(models.Model):
     def __str__(self):
         return f"{self.user.username} bought {self.product.name}"
 
+# models.py
+from django.db import models
+from django.conf import settings
+
 class DoctorProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     specialization = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=15)
+    image = models.ImageField(upload_to='doctor_images/', null=True, blank=True)
 
     def __str__(self):
         return self.user.username
+
 
 class PharmacistProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -56,9 +62,6 @@ class PharmacistProfile(models.Model):
 
     def __str__(self):
         return self.user.username
-    
-from django.conf import settings
-from django.db import models
 
 class Prescription(models.Model):
     STATUS_CHOICES = [
@@ -67,24 +70,13 @@ class Prescription(models.Model):
         ('rejected', 'Rejected'),
     ]
 
-    patient = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='prescriptions'
-    )
-    doctor = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='approved_prescriptions'
-    )
-    uploaded_file = models.ImageField(upload_to='prescriptions/')
+    patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='prescriptions')
+    doctor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_prescriptions')
+    description = models.TextField()
+    file = models.FileField(upload_to='prescriptions/', null=True, blank=True)
+    uploaded_at = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-    notes = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    sent_to_pharmacist = models.BooleanField(default=False)  # New field
 
     def __str__(self):
-        return f"Prescription for {self.patient.username} - {self.status}"
-
+        return f"Prescription by {self.patient.username} for Dr. {self.doctor.username}"
