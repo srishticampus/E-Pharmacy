@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assigned Prescriptions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">Prescriptions Assigned to You</h2>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for prescription in prescriptions %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title">Patient: {{ prescription.patient.username }}</h5>
+                        <p class="card-text"><strong>Description:</strong> {{ prescription.description }}</p>
+                        <p class="card-text text-muted"><strong>Uploaded At:</strong> {{ prescription.uploaded_at }}</p>
+                        <p class="card-text">
+                            <strong>Status:</strong>
+                            <span class="badge 
+                                {% if prescription.status == 'approved' %} bg-success
+                                {% elif prescription.status == 'rejected' %} bg-danger
+                                {% else %} bg-warning text-dark
+                                {% endif %}">
+                                {{ prescription.status|capfirst }}
+                            </span>
+                        </p>
+                        <a href="{{ prescription.file.url }}" class="btn btn-outline-primary w-100 mb-2">Download File</a>
+
+                        {% if prescription.status == 'pending' %}
+                        <form method="POST" class="d-flex justify-content-between">
+                            {% csrf_token %}
+                            <input type="hidden" name="prescription_id" value="{{ prescription.id }}">
+                            <button name="action" value="approve" class="btn btn-success w-50 me-1">Approve</button>
+                            <button name="action" value="reject" class="btn btn-danger w-50 ms-1">Reject</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col">
+                <div class="alert alert-info text-center">No prescriptions assigned yet.</div>
+            </div>
+            {% endfor %}
+
+
+            {% for prescription in prescriptions %}
+    <!-- Existing prescription display code -->
+
+    {% if prescription.status == 'approved' and not prescription.sent_to_pharmacist %}
+        <form method="POST" class="mt-2">
+            {% csrf_token %}
+            <input type="hidden" name="prescription_id" value="{{ prescription.id }}">
+            <button name="action" value="send_to_pharmacist" class="btn btn-info w-100">Send to Pharmacist</button>
+        </form>
+    {% elif prescription.sent_to_pharmacist %}
+        <div class="alert alert-success mt-2 text-center">Sent to Pharmacist</div>
+    {% endif %}
+{% endfor %}
+
+        </div>
+    </div>
+</body>
+</html>

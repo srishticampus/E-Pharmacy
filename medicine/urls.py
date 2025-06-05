@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.urls import path
-from .views import register_user, login_view, logout_view
+from .views import register_user, logout_view
 from .views import product_list, product_detail, add_to_cart, cart
 
 
@@ -10,8 +10,15 @@ urlpatterns = [
     path('', views.index, name='index'),
 
     path('register/', register_user, name='register'),
-    path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
+
+
+    # urls.py
+
+    path('user_login_view', views.user_login_view, name='user_login'),
+    path('doctor_login_view', views.doctor_login_view, name='doctor_login'),
+    path('pharmacist_login_view', views.pharmacist_login_view, name='pharmacist_login'),
+
 
     path('products/', product_list, name='product_list'),
     path('products/<int:product_id>/', product_detail, name='product_detail'),
@@ -35,7 +42,19 @@ urlpatterns = [
 
     path('doctor_dashboard/', views.doctor_dashboard, name='doctor_dashboard'),
     path('doctor/<int:doctor_id>/', views.doctor_detail, name='doctor_detail'),
-    path('upload/', views.upload_prescription, name='upload_prescription'),
+    path('upload_prescription/', views.upload_prescription, name='upload_prescription'),
+    path('view_prescriptions/', views.view_prescriptions, name='view_prescriptions'),
+    path('prescription/success/', views.prescription_success, name='prescription_success'),
+    path('all-doctors/', views.all_doctors, name='all_doctors'),
+    path('status/', views.prescription_status, name='prescription_status'),
+    path('my-prescriptions/', views.my_prescriptions, name='my_prescriptions'),
+    path('pharmacist/dashboard/', views.pharmacist_dashboard, name='pharmacist_dashboard'),
+
+
+
+
+
+
 
 
 

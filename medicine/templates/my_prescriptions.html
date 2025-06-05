@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Prescriptions</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url("{% static 'images/prescription_bg.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .prescription-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 1000px;
+            margin: 50px auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container prescription-container">
+        <h2 class="text-center mb-4">My Prescriptions</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for prescription in prescriptions %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title">Description</h5>
+                        <p class="card-text">{{ prescription.description }}</p>
+                        <p class="card-text text-muted"><strong>Uploaded At:</strong> {{ prescription.uploaded_at }}</p>
+                        <p class="card-text">
+                            <strong>Status:</strong>
+                            <span class="badge 
+                                {% if prescription.status == 'approved' %} bg-success
+                                {% elif prescription.status == 'rejected' %} bg-danger
+                                {% else %} bg-warning text-dark
+                                {% endif %}">
+                                {{ prescription.status|capfirst }}
+                            </span>
+                        </p>
+                        <a href="{{ prescription.file.url }}" class="btn btn-outline-primary w-100">Download File</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col">
+                <div class="alert alert-info text-center">You have not uploaded any prescriptions yet.</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

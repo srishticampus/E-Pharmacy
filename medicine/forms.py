@@ -1,16 +1,17 @@
 from django import forms
-from .models import Prescription
 
-class PrescriptionUploadForm(forms.ModelForm):
+from django import forms
+from .models import Prescription
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class PrescriptionForm(forms.ModelForm):
     class Meta:
         model = Prescription
-        fields = ['uploaded_file']
+        fields = ['doctor', 'description', 'file']
 
-    def clean_uploaded_file(self):
-        file = self.cleaned_data.get('uploaded_file')
-        if file:
-            if not file.name.lower().endswith(('.jpg', '.jpeg', '.png', '.pdf')):
-                raise forms.ValidationError('Unsupported file format.')
-            if file.size > 5 * 1024 * 1024:
-                raise forms.ValidationError('File size exceeds 5MB.')
-        return file
+    def __init__(self, *args, **kwargs):
+        super(PrescriptionForm, self).__init__(*args, **kwargs)
+        # Filter the doctor queryset to include only users with user_type='doctor'
+        self.fields['doctor'].queryset = User.objects.filter(user_type='doctor')
